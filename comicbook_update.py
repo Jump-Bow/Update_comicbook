@@ -56,7 +56,7 @@ def send_update(bookname, bookrul, bookold,ntf_Group):
     #將發送的 notify key 填入 發送
     for group in ntf_Group:
         headers = {
-            "Authorization": "Bearer " + group,
+            "Authorization": "Bearer " + group.split(',')[0],
             "Content-Type": "application/x-www-form-urlencoded"
         }
         params = {"message": bookname + ","+booknew + "  "+"https://www.cocomanhua.com"+comichref}

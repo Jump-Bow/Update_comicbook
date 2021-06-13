@@ -7,3 +7,7 @@
 掛在樹莓派上面
 
 <img src="https://github.com/Jump-Bow/Update_comicbook/blob/main/comicbook_update.jpg" width="240">
+
+
+-----20210613
+修改為複數 notify 

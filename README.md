@@ -6,4 +6,4 @@
 
 掛在樹莓派上面
 
-![image](https://github.com/Jump-Bow/Update_comicbook/blob/main/comicbook_update.jpg)
+<img src="https://github.com/Jump-Bow/Update_comicbook/blob/main/comicbook_update.jpg" width="240">

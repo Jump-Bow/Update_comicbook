@@ -15,23 +15,24 @@ def main():
     with open("Line_notify.txt", 'r', encoding="utf-8") as ntf:
         ntf_Group = ntf.read().splitlines()
     ntf.close()
-
+    
+    combooksave =[]
     # 把每一行的漫畫都抓出來並分開
     for i in content_list:
         combook = i.split(',')
-        #
+        #進行資料更新
         newcomic = send_update(combook[0], combook[1], combook[2],ntf_Group)
         if newcomic != "None" :
             combook[2] = newcomic 
             update_flag = True
-
+        combooksave .append( [combook[0], combook[1], combook[2]])
     #沒更新就跳出
     if update_flag == False: return None,print("END")
 
     # 寫回更新項目
     file = open('read.txt', 'w', encoding="utf-8")
-    for i in content_list:
-        file.writelines(combook[0]+","+combook[1]+","+combook[2]+"\n")
+    for i in combooksave:
+        file.writelines(i[0]+","+i[1]+","+i[2]+"\n")
     file.close()
     print("END")
 

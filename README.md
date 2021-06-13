@@ -5,3 +5,5 @@
 寫了一個自動發布漫畫更新到 LINE 
 
 掛在樹莓派上面
+
+![image](https://github.com/Jump-Bow/Update_comicbook/blob/main/comicbook_update.jpg)

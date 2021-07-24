@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def main():
-    #紀錄有更新再進行記錄更新
+    #紀錄有更新再進行記錄更新d
     update_flag = False
 
     # 文件檔紀錄要抓取的漫畫位置

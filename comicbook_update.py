@@ -1,6 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 def main():
     #紀錄有更新再進行記錄更新d
@@ -40,31 +41,42 @@ def main():
 
 
 def send_update(bookname, bookrul, bookold,ntf_Group):
-    #抓取漫畫網頁
-    response = requests.get(bookrul)
-    soup = BeautifulSoup(response.text, "html.parser")
+    
+    # #抓取漫畫網頁
+    # response = requests.get(bookrul)
+    # soup = BeautifulSoup(response.text, "html.parser")
 
-    #抓取最新集數
-    booknew = soup.findAll('a', attrs={"class": "fed-btns-info fed-rims-info fed-part-eone", "href": re.compile(".html")}, limit=1)[0].get('title')
+    # #抓取最新集數
+    # booknew = soup.findAll('a', attrs={"class": "fed-padding fed-col-xs6 fed-col-md3 fed-col-lg3", "href": re.compile(".html")}, limit=1)[0].get('title')
+
+    
+    selm = webdriver.Edge('./msedgedriver')
+    selm.get (bookrul)
+    # booknew=selm.find_elements_by_class_name("fed-part-eone")[26] if  selm.find_elements_by_class_name("fed-part-eone")[26].text!='排序：正序 展开' else selm.find_elements_by_class_name("fed-part-eone")[27]
+
+    booknew=selm.find_elements_by_class_name("fed-part-eone")[27]
 
     #沒有新集數，跳出
-    if bookold == booknew:
+    # if bookold == booknew:
+    if bookold == booknew.text:
         return "None"
     #抓取最新集數html位置
-    comichref = soup.findAll('a', attrs={"class": "fed-btns-info fed-rims-info fed-part-eone", "href": re.compile(".html")}, limit=1)[0].get('href')
-        
+    #comichref = soup.findAll('a', attrs={"class": "fed-btns-info fed-rims-info fed-part-eone", "href": re.compile(".html")}, limit=1)[0].get('href')
+    comichref=booknew.get_attribute('href')
     #將發送的 notify key 填入 發送
     for group in ntf_Group:
         headers = {
             "Authorization": "Bearer " + group.split(',')[0],
             "Content-Type": "application/x-www-form-urlencoded"
         }
-        params = {"message": bookname + ","+booknew + "  "+"https://www.cocomanhua.com"+comichref}
+        # params = {"message": bookname + ","+booknew + "  "+"https://www.cocomanhua.com"+comichref}
+        params = {"message": bookname + ","+booknew.text + "  "+str(comichref)}
         r = requests.post("https://notify-api.line.me/api/notify",
                         headers=headers, params=params)
         print(r.status_code)  # 200
 
-    return booknew
+    # return booknew
+    return booknew.text
 
 
 if __name__ == '__main__':

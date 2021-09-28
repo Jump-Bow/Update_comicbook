@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+
 def main():
     #紀錄有更新再進行記錄更新d
     update_flag = False
@@ -49,12 +50,15 @@ def send_update(bookname, bookrul, bookold,ntf_Group):
     # #抓取最新集數
     # booknew = soup.findAll('a', attrs={"class": "fed-padding fed-col-xs6 fed-col-md3 fed-col-lg3", "href": re.compile(".html")}, limit=1)[0].get('title')
 
-    
-    selm = webdriver.Edge('./msedgedriver')
+    # 神秘換電腦後 edge 無法用換 火狐
+    selm = webdriver.Firefox()
+    #selm = webdriver.Edge(executable_path=r'D:\python\update_book\Update_comicbook\msedgedriver.exe')
+    #selm = webdriver.Edge('./msedgedriver')
+    #selm = webdriver.Chrome('./chromedriver')
     selm.get (bookrul)
     # booknew=selm.find_elements_by_class_name("fed-part-eone")[26] if  selm.find_elements_by_class_name("fed-part-eone")[26].text!='排序：正序 展开' else selm.find_elements_by_class_name("fed-part-eone")[27]
 
-    booknew=selm.find_elements_by_class_name("fed-part-eone")[27]
+    booknew=selm.find_elements_by_class_name("fed-rims-info")[1]
 
     #沒有新集數，跳出
     # if bookold == booknew:
@@ -75,8 +79,12 @@ def send_update(bookname, bookrul, bookold,ntf_Group):
                         headers=headers, params=params)
         print(r.status_code)  # 200
 
-    # return booknew
-    return booknew.text
+    # 回傳新集數
+    rtnmsg =  booknew.text
+
+    # 關閉 browser
+    selm.quit()
+    return rtnmsg
 
 
 if __name__ == '__main__':
